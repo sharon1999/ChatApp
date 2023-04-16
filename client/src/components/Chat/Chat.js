@@ -5,11 +5,13 @@ import "./Chat.css";
 import InfoBar from "../InfoBar/Infobar";
 import Input from "../Input/Input";
 import Messages from "../Messages/Messages";
+import ChatList from "../ChatList/ChatList";
 
 let socket;
 const Chat = ({ location }) => {
   const [name, setName] = useState("");
   const [room, setRoom] = useState("");
+  const [users, setUsers] = useState('');
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const ENDPOINT = "http://localhost:5000";
@@ -29,30 +31,36 @@ const Chat = ({ location }) => {
   }, [ENDPOINT, location.search]);
 
   useEffect(() => {
-    socket.on(
-      "message",
-      (message) => {
-        console.log(message);
-        setMessages(messages => [...messages, message]);
-      })
-    }, []);
+    socket.on("message", (message) => {
+      console.log(messages);
+      setMessages((messages) => [...messages, message]);
+    });
+    socket.on("roomData", ({ users }) => {
+      setUsers(users);
+    });
+  }, []);
 
-  const sendMessage = (event) =>{
+  const sendMessage = (event) => {
     event.preventDefault();
-    if(message){
-      socket.emit("sendMessage",message,()=>setMessage(''))
+    if (message) {
+      socket.emit("sendMessage", message, () => setMessage(""));
     }
-  }  
-  console.log("Msgs",messages);
-  return(
+  };
+  console.log("Msgs", messages);
+  return (
     <div className="outerContainer">
       <div className="container">
-        <InfoBar room={room}/>
+        <InfoBar room={room} />
         <Messages messages={messages} name={name} />
-        <Input message={message} setMessage={setMessage} sendMessage={sendMessage} />
+        <Input
+          message={message}
+          setMessage={setMessage}
+          sendMessage={sendMessage}
+        />
       </div>
+      <div><ChatList users={users} /></div>
     </div>
-  )
+  );
 };
 
 export default Chat;

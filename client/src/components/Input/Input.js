@@ -12,7 +12,7 @@ function Input({ setMessage, sendMessage, message }) {
       onChange={({ target: { value } }) => setMessage(value)}
       onKeyDown={event => event.key === 'Enter' ? sendMessage(event) : null}
     />
-    <button className="sendButton" onClick={e => sendMessage(e)}>Send ▶️</button>
+    <button className="sendButton" onClick={e => sendMessage(e)}>Send</button>
   </form>
   )
 }
