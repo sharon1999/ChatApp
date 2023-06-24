@@ -4,10 +4,18 @@ const socketio = require("socket.io");
 const http = require("http");
 const router = require("./router");
 const { addUser, removeUser, getUser, getUsersInRoom } = require("./users");
+const dotenv = require("dotenv");
+const connectDB = require("./config/db");
+const userRoutes = require('./routes/userRoutes')
 
-const PORT = process.env.PORT || 5000;
+dotenv.config();
+connectDB();
+
+
+const PORT = process.env.PORT;
 
 const app = express();
+app.use(express.json())
 const server = http.createServer(app);
 const io = socketio(server, {
   cors: {
@@ -15,6 +23,7 @@ const io = socketio(server, {
   },
 });
 app.use(cors());
+app.use('/api/user',userRoutes)
 io.on("connection", (socket) => {
   console.log(socket.id);
   socket.on("join", ({ name, room }, callback) => {
@@ -64,6 +73,6 @@ io.on("connection", (socket) => {
   });
 });
 app.use(router);
-server.listen(process.env.PORT || 5000, () =>
+server.listen(process.env.PORT, () =>
   console.log(`Server has started at port ${PORT}`)
 );
