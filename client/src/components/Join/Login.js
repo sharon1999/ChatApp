@@ -1,6 +1,14 @@
 import "./Join.css";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { Button, ButtonGroup } from '@chakra-ui/react'
+import {
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
+} from "@chakra-ui/react";
 
 function Login() {
   const [name, setName] = useState("");
@@ -39,7 +47,6 @@ function Login() {
     // </div>
     <form className="w-full max-w-sm mx-auto bg-white p-8 rounded-md shadow-md">
       <div className="mb-4">
-       
         <input
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
           type="text"
@@ -49,6 +56,7 @@ function Login() {
           placeholder="Name"
         />
       </div>
+      <Button colorScheme='blue'>Button</Button>
 
       {/* <div className="mb-4">
         <label
@@ -128,6 +136,8 @@ function Login() {
       >
         Login
       </button>
+
+    
     </form>
   );
 }
